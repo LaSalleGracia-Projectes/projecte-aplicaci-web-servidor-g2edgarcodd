@@ -1,0 +1,45 @@
+version: '3.9'
+services:
+  webserver:
+    container_name: StreamHub-webServer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 8000:80
+    depends_on:
+      - mariadb
+      - mongo
+    networks:
+      - streamhub_net
+
+  mariadb:
+    image: mariadb
+    container_name: StreamHub-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: streamhub_backend
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - streamhub_net
+  
+  mongo:
+    image: mongo:6.0
+    container_name: StreamHub-mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data/mongo:/data/db
+    networks:
+      - streamhub_net
+
+networks:
+  streamhub_net:
+    driver: bridge

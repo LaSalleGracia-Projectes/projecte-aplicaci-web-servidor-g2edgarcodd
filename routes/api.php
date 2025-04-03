@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Review;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
@@ -15,6 +16,33 @@ Route::delete('/deleteReview', [ReviewController::class, 'deleteReview']);
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+// Ruta de verificación (el enlace que el usuario recibe por correo)
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return response()->json(['message' => 'El correo ya estaba verificado']);
+    }
+
+    $request->fulfill();
+
+    return response()->json(['message' => 'Correo verificado correctamente']);
+})->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+
+// Ruta de notificación de verificación (por si quieres mostrar algo mientras espera)
+Route::get('/email/verify', function () {
+    return response()->json(['message' => 'Por favor verifica tu correo']);
+})->middleware('auth:sanctum')->name('verification.notice');
+
+// Ruta para reenviar el correo de verificación
+Route::post('/email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return response()->json(['message' => 'Tu correo ya está verificado.']);
+    }
+
+    $request->user()->sendEmailVerificationNotification();
+
+    return response()->json(['message' => 'Correo de verificación reenviado']);
+})->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
 
 /*
 Route::middleware('api')->group(function () {

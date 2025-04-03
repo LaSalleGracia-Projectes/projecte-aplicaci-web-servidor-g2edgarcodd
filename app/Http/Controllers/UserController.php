@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -23,14 +25,6 @@ class UserController extends Controller
                 'password' => 'required|string|min:8|confirmed'
             ]
         );
-        /*$request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'date_of_birth' => 'required|date',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);*/
 
         if ($validator->fails()) {
             return response([
@@ -51,13 +45,11 @@ class UserController extends Controller
             'is_admin'   => false,
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        event(new Registered($user));
 
 
         return response()->json([
-            'message'      => 'Usuario registrado exitosamente',
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
+            'message'      => 'Usuario registrado correctamente. Verifica tu direccion de correo.'
         ], 201);
     }
 
@@ -88,6 +80,12 @@ class UserController extends Controller
             throw ValidationException::withMessages([
                 'email' => [ 'Las credenciales son incorrectas'],
             ]);
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => 'El correo no esta verificado'
+            ], 400);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;

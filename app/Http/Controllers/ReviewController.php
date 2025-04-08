@@ -16,9 +16,9 @@ class ReviewController extends Controller
             $request->all(),
             [
                 'title' => 'required|string|max:255',
-                'body' => 'required|text|max:255',
+                'body' => 'required|string|max:255',
                 'is_positive' => 'required|boolean',
-                'user_id' => 'required|bigint',
+                'user_id' => 'required|integer',
                 'movie_id' => 'required|string|max:255'
             ]
         );
@@ -31,7 +31,7 @@ class ReviewController extends Controller
             ], 400);
         }
 
-        $review = Review::create([
+        Review::create([
             'title' => $request->title,
             'body' => $request->body,
             'is_positive' => $request->is_positive,

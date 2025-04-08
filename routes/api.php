@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::get('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/uploadImage', [UserController::class, 'uploadImage']);
-Route::post('/createReview', [Review::class, 'createReview']);
+Route::post('/createReview', [ReviewController::class, 'createReview']);
 Route::delete('/deleteReview', [ReviewController::class, 'deleteReview']);
 
 Route::get('/user', function (Request $request) {

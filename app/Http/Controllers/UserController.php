@@ -145,4 +145,37 @@ class UserController extends Controller
             'success' => true
         ]);
     }
+
+    public function getUser(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'token'    => 'required|string',
+                'user_id' => 'required|integer'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
+    }
 }

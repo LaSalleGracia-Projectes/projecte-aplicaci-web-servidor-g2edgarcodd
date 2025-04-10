@@ -75,4 +75,48 @@ class ReviewController extends Controller
             'message' => 'Review eliminada correctamente'
         ]);
     }
+
+    public function modifyReview(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'review_id' => 'required|integer',
+                'review_user_id' => 'required|integer',
+                'user_id' => 'required|integer',
+                'title' => 'required|string|max:255',
+                'body' => 'required|string|max:255',
+                'is_positive' => 'required|boolean'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response([
+                'success' => false,
+                'message' => 'Error al modificar review',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $review = Review::find($request->review_id);
+
+        if (!$review) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Reseña no encontrada'
+            ], 404);
+        }
+
+        if (($request->review_user_id) != $review->user_id) {
+            return response([
+                'success' => false,
+                'message' => 'Error: solo el dueño de la review puede modificarla'
+            ]);
+        }
+        $review->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'is_positive' => $request->is_positive
+        ]);
+    }
 }

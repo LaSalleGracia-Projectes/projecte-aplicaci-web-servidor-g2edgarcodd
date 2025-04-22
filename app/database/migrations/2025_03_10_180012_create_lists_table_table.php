@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedTinyInteger('list_type'); // 1: Movies, 2: Reviews
             $table->timestamps();
 
             $table->foreign('user_id')

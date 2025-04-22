@@ -16,9 +16,9 @@ class ReviewController extends Controller
             $request->all(),
             [
                 'title' => 'required|string|max:255',
-                'body' => 'required|text|max:255',
+                'body' => 'required|string|max:255',
                 'is_positive' => 'required|boolean',
-                'user_id' => 'required|bigint',
+                'user_id' => 'required|integer',
                 'movie_id' => 'required|string|max:255'
             ]
         );
@@ -26,12 +26,12 @@ class ReviewController extends Controller
         if ($validator->fails()) {
             return response([
                 'success' => false,
-                'message' => 'Error al registrarse',
+                'message' => 'Error al crear la review',
                 'errors' => $validator->errors()
             ], 400);
         }
 
-        $review = Review::create([
+        Review::create([
             'title' => $request->title,
             'body' => $request->body,
             'is_positive' => $request->is_positive,
@@ -74,5 +74,89 @@ class ReviewController extends Controller
             'success' => true,
             'message' => 'Review eliminada correctamente'
         ]);
+    }
+
+    public function modifyReview(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'review_id' => 'required|integer',
+                'review_user_id' => 'required|integer',
+                'user_id' => 'required|integer',
+                'title' => 'required|string|max:255',
+                'body' => 'required|string|max:255',
+                'is_positive' => 'required|boolean'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response([
+                'success' => false,
+                'message' => 'Error al modificar review',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $review = Review::find($request->review_id);
+
+        if (!$review) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Reseña no encontrada'
+            ], 404);
+        }
+
+        if (($request->review_user_id) != $review->user_id) {
+            return response([
+                'success' => false,
+                'message' => 'Error: solo el dueño de la review puede modificarla'
+            ]);
+        }
+        $review->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'is_positive' => $request->is_positive
+        ]);
+    }
+
+    public function getReviewByUser(Request $request)
+    {
+        $user = $request->user();
+
+        $reviews = Review::where('user_id', $user->id)->get();
+
+        if ($reviews->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se ha encontrado ninguna reseña',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $reviews,
+        ], 200);
+    }
+
+    public function getReviewByMovie(Request $request)
+    {
+        $request->validate([
+            'movie_id' => 'required|string',
+        ]);
+
+        $reviews = Review::where('movie_id', $request->movie_id)->get();
+
+        if ($reviews->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se ha encontrado ninguna reseña',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $reviews,
+        ], 200);
     }
 }

@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -23,14 +25,6 @@ class UserController extends Controller
                 'password' => 'required|string|min:8|confirmed'
             ]
         );
-        /*$request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'date_of_birth' => 'required|date',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);*/
 
         if ($validator->fails()) {
             return response([
@@ -51,13 +45,12 @@ class UserController extends Controller
             'is_admin'   => false,
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        event(new Registered($user));
 
 
         return response()->json([
-            'message'      => 'Usuario registrado exitosamente',
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
+            'sucess' => true,
+            'message'      => 'Usuario registrado correctamente. Verifica tu direccion de correo.'
         ], 201);
     }
 
@@ -77,6 +70,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response([
+                'success' => false,
                 'message' => 'Error al iniciar sesion',
                 'errors' => $validator->errors()
             ], 400);
@@ -86,17 +80,26 @@ class UserController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => [ 'Las credenciales son incorrectas'],
+                'success' => false,
+                'errors' => [ 'Las credenciales son incorrectas'],
             ]);
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => 'El correo no esta verificado'
+            ], 400);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
+            'success' => true,
             'message'      => 'Login correcto',
+            'user_id' => $user->id,
             'access_token' => $token,
             'token_type'   => 'Bearer',
-        ]);
+        ], 200);
     }
 
     public function uploadImage(Request $request)
@@ -110,6 +113,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
+                'success' => false,
                 'message' => 'Error al cargar la imagen',
                 'errors' => $validator->errors()
             ], 400);
@@ -122,6 +126,7 @@ class UserController extends Controller
         $image_uploaded_path = $image->store($uploadFolder, 'public');
 
         return response()->json([
+            'success' => true,
             'message' => 'Imagen cargada correctamente',
         ], 200);
     }
@@ -146,5 +151,38 @@ class UserController extends Controller
         return response()->json([
             'success' => true
         ]);
+    }
+
+    public function getUser(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'token'    => 'required|string',
+                'user_id' => 'required|integer'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
 }

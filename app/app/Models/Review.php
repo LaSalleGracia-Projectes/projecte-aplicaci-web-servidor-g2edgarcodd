@@ -19,7 +19,7 @@ class Review extends Model
 
     public function users()
     {
-        return $this->belognsToOne(User::class);
+        return $this->belongsToOne(User::class);
     }
 
     public function lists()

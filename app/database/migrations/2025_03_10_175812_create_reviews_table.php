@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('is_positive');
             $table->unsignedBigInteger('user_id');
             $table->string('movie_id');
-            $table->integer('likes');
+            $table->integer('likes')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')

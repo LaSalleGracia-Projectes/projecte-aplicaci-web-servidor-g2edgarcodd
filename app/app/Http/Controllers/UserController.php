@@ -148,9 +148,16 @@ class UserController extends Controller
             ], 400);
         }
 
-        return response()->json([
-            'success' => true
-        ]);
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Email de restablecimiento de contraseña enviado'
+            ], 200);
+        }
     }
 
     public function getUser(Request $request)
@@ -183,6 +190,45 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'data' => $user
+        ], 200);
+    }
+
+    public function updateUser(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|integer',
+                'name' => 'string|max:255',
+                'surname' => 'string|max:255',
+                'date_of_birth' => 'date',
+                'username' => 'string|max:255|unique:users,username,' . $request->user_id,
+                'password' => 'string|min:8|confirmed'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el usuario',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        $user->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario actualizado correctamente'
         ], 200);
     }
 }

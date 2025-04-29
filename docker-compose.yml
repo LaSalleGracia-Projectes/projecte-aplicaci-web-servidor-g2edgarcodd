@@ -16,7 +16,7 @@ services:
       - streamhub_net
 
   mariadb:
-    image: mariadb
+    image: mariadb:11.5.2
     container_name: StreamHub-mariadb
     restart: always
     environment:

@@ -38,6 +38,11 @@ class ReviewController extends Controller
             'user_id' => $request->user_id,
             'movie_id' => $request->movie_id,
         ]);
+
+        return response([
+            'success' => true,
+            'message' => 'Review creada correctamente'
+        ]);
     }
 
     public function deleteReview(Request $request)

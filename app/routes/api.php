@@ -6,20 +6,21 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Review;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Middleware\TokenAuthentication;
 
 // Rutas de usuario
 Route::get('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
-Route::get('/getUser', [UserController::class, 'getUser']);
-Route::post('/uploadImage', [UserController::class, 'uploadImage']);
-Route::middleware('auth:sanctum')->post('/updateUser', [UserController::class, 'updateUser']);
+Route::middleware([TokenAuthenticacion::class])->get('/getUser', [UserController::class, 'getUser']);
+Route::middleware([TokenAuthenticacion::class])->post('/uploadImage', [UserController::class, 'uploadImage']);
+Route::middleware([TokenAuthenticacion::class])->post('/updateUser', [UserController::class, 'updateUser']);
 Route::post('/forgotPassword', [UserController::class, 'forgotPassword']);
 
 //Rutas de reseñas
-Route::get('/getReviews', [ReviewController::class, 'getReviews']);
-Route::get('/getReview', [ReviewController::class, 'getReview']);
-Route::post('/createReview', [ReviewController::class, 'createReview']);
-Route::delete('/deleteReview', [ReviewController::class, 'deleteReview']);
+Route::middleware([TokenAuthenticacion::class])->get('/getReviews', [ReviewController::class, 'getReviews']);
+Route::middleware([TokenAuthenticacion::class])->get('/getReview', [ReviewController::class, 'getReview']);
+Route::middleware([TokenAuthenticacion::class])->post('/createReview', [ReviewController::class, 'createReview']);
+Route::middleware([TokenAuthenticacion::class])->delete('/deleteReview', [ReviewController::class, 'deleteReview']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();

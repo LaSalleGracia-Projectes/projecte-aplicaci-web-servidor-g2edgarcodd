@@ -81,7 +81,7 @@ class ReviewController extends Controller
         ]);
     }
 
-    public function modifyReview(Request $request)
+    public function updateReview(Request $request)
     {
         $validator = Validator::make(
             $request->all(),

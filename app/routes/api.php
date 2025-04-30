@@ -21,7 +21,7 @@ Route::middleware([TokenAuthenticacion::class])->get('/getReviews', [ReviewContr
 Route::middleware([TokenAuthenticacion::class])->get('/getReview', [ReviewController::class, 'getReview']);
 Route::middleware([TokenAuthenticacion::class])->post('/createReview', [ReviewController::class, 'createReview']);
 Route::middleware([TokenAuthenticacion::class])->delete('/deleteReview', [ReviewController::class, 'deleteReview']);
-Route::middleware([TokenAuthenticacion::class])->post('/updateReview', [ReviewController::class, 'updateReview']);
+Route::middleware([TokenAuthenticacion::class])->put('/updateReview', [ReviewController::class, 'updateReview']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();

@@ -123,6 +123,11 @@ class ReviewController extends Controller
             'body' => $request->body,
             'is_positive' => $request->is_positive
         ]);
+
+        return response([
+            'success' => true,
+            'message' => 'Review actualizada correctamente'
+        ]);
     }
 
     public function getReviewByUser(Request $request)

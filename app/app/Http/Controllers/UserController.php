@@ -165,7 +165,6 @@ class UserController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'token'    => 'required|string',
                 'user_id' => 'required|integer'
             ]
         );

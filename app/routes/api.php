@@ -6,14 +6,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Review;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Middleware\TokenAuthentication;
+use App\Http\Middleware\TokenAuthenticacion;
 
 // Rutas de usuario
 Route::get('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 Route::middleware([TokenAuthenticacion::class])->get('/getUser', [UserController::class, 'getUser']);
 Route::middleware([TokenAuthenticacion::class])->post('/uploadImage', [UserController::class, 'uploadImage']);
-Route::middleware([TokenAuthenticacion::class])->post('/updateUser', [UserController::class, 'updateUser']);
+Route::middleware([TokenAuthenticacion::class])->put('/updateUser', [UserController::class, 'updateUser']);
 Route::post('/forgotPassword', [UserController::class, 'forgotPassword']);
 
 //Rutas de reseñas

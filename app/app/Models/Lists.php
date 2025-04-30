@@ -19,9 +19,4 @@ class Lists extends Model
     {
         return $this->belongsToOne(User::class);
     }
-
-    public function lists()
-    {
-        return $this->belongsToMany(MediaList::class);
-    }
 }

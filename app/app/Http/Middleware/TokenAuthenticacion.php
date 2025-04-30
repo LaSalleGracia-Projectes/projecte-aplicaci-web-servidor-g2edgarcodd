@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class TokenAuthenticacion
@@ -15,10 +16,20 @@ class TokenAuthenticacion
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()) {
+        $bearerToken = $request->bearerToken();
+        if (!$bearerToken) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se ha proporcionado un token de autenticación válido.'
+                'error' => 'Token no proporcionado'
+            ], 401);
+        }
+
+        $accessToken = PersonalAccessToken::findToken($bearerToken);
+        if (!$accessToken) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Token inválido',
+                'token' => $accessToken
             ], 401);
         }
         return $next($request);

@@ -1,0 +1,784 @@
+/* Estilos para la gestión de usuarios en el panel de administración */
+
+.admin-users-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-users-page h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--adminPanel-text-primary);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.admin-users-page h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, #fbc500, #ffd700);
+  border-radius: 9999px;
+}
+
+/* Header con acciones */
+.admin-users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-users-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--adminPanel-text-primary);
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.admin-users-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #fbc500, #ffd700);
+  border-radius: 3px;
+}
+
+.admin-users-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.admin-users-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-users-action-btn.primary {
+  background: linear-gradient(90deg, #fbc500, #ffd700);
+  color: #0f172a;
+  box-shadow: 0 4px 10px rgba(251, 197, 0, 0.2);
+}
+
+.admin-users-action-btn.secondary {
+  background: var(--adminPanel-surface);
+  color: var(--adminPanel-text-secondary);
+  border: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-action-btn:hover {
+  transform: translateY(-3px);
+}
+
+.admin-users-action-btn.primary:hover {
+  box-shadow: 0 6px 15px rgba(251, 197, 0, 0.25);
+}
+
+.admin-users-action-btn.secondary:hover {
+  background: var(--adminPanel-surface-hover);
+  color: var(--adminPanel-text-primary);
+}
+
+/* Filtros y búsqueda */
+.admin-users-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: var(--adminPanel-surface);
+  padding: 1.25rem;
+  border-radius: 1rem;
+  box-shadow: var(--adminPanel-shadow-md);
+  border: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-search {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.admin-users-search input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--adminPanel-border);
+  background: var(--adminPanel-surface);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  color: var(--adminPanel-text-primary);
+}
+
+.admin-users-search input:focus {
+  outline: none;
+  border-color: #fbc500;
+  box-shadow: 0 0 0 3px rgba(251, 197, 0, 0.2);
+}
+
+.admin-users-search i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--adminPanel-text-tertiary);
+  pointer-events: none;
+}
+
+.admin-users-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-users-filter-label {
+  font-size: 0.875rem;
+  color: var(--adminPanel-text-secondary);
+  font-weight: 500;
+}
+
+.admin-users-filter-select {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--adminPanel-border);
+  background: var(--adminPanel-surface);
+  font-size: 0.875rem;
+  color: var(--adminPanel-text-primary);
+  min-width: 150px;
+}
+
+.admin-users-filter-select:focus {
+  outline: none;
+  border-color: #fbc500;
+  box-shadow: 0 0 0 3px rgba(251, 197, 0, 0.2);
+}
+
+/* Tabla de usuarios */
+.admin-users-table-container {
+  background: var(--adminPanel-surface);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--adminPanel-shadow-md);
+  border: 1px solid var(--adminPanel-border);
+  margin-bottom: 2rem;
+}
+
+.admin-users-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-users-table th {
+  background-color: var(--adminPanel-surface-secondary);
+  color: var(--adminPanel-text-secondary);
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--adminPanel-border);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-users-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--adminPanel-border);
+  color: var(--adminPanel-text-secondary);
+  font-size: 0.875rem;
+}
+
+.admin-users-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-users-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.admin-users-table tbody tr:hover {
+  background-color: var(--adminPanel-surface-hover);
+}
+
+/* Celda de usuario con avatar */
+.admin-users-table-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-users-table-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--adminPanel-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--adminPanel-text-tertiary);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.admin-users-table-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-users-table-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-users-table-name {
+  font-weight: 600;
+  color: var(--adminPanel-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.admin-users-table-email {
+  font-size: 0.75rem;
+  color: var(--adminPanel-text-tertiary);
+}
+
+/* Badge de rol de usuario */
+.admin-users-table-role {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.admin-users-table-role.admin {
+  background-color: var(--adminPanel-accent-surface);
+  color: #fbc500;
+}
+
+.admin-users-table-role.moderator {
+  background-color: var(--adminPanel-info-light);
+  color: var(--adminPanel-info);
+}
+
+.admin-users-table-role.editor {
+  background-color: var(--adminPanel-success-light);
+  color: var(--adminPanel-success);
+}
+
+.admin-users-table-role.user {
+  background-color: var(--adminPanel-surface-secondary);
+  color: var(--adminPanel-text-tertiary);
+}
+
+/* Badge de estado de usuario */
+.admin-users-table-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.admin-users-table-status.active {
+  background-color: var(--adminPanel-success-light);
+  color: var(--adminPanel-success);
+}
+
+.admin-users-table-status.inactive {
+  background-color: var(--adminPanel-danger-light);
+  color: var(--adminPanel-danger);
+}
+
+.admin-users-table-status.pending {
+  background-color: var(--adminPanel-warning-light);
+  color: var(--adminPanel-warning);
+}
+
+.admin-users-table-status.banned {
+  background-color: #1e293b;
+  color: #f8fafc;
+}
+
+/* Acciones de tabla */
+.admin-users-table-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.admin-users-table-action {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--adminPanel-text-secondary);
+  background: var(--adminPanel-surface-secondary);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-users-table-action:hover {
+  transform: translateY(-2px);
+}
+
+.admin-users-table-action.edit:hover {
+  color: var(--adminPanel-info);
+  background: var(--adminPanel-info-light);
+}
+
+.admin-users-table-action.delete:hover {
+  color: var(--adminPanel-danger);
+  background: var(--adminPanel-danger-light);
+}
+
+.admin-users-table-action.view:hover {
+  color: var(--adminPanel-success);
+  background: var(--adminPanel-success-light);
+}
+
+.admin-users-table-action.ban:hover {
+  color: #f8fafc;
+  background: #1e293b;
+}
+
+/* Paginación */
+.admin-users-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.admin-users-page-button {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--adminPanel-surface);
+  color: var(--adminPanel-text-secondary);
+  border: 1px solid var(--adminPanel-border);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-users-page-button.active {
+  background: #fbc500;
+  color: #050b14;
+  border-color: #fbc500;
+}
+
+.admin-users-page-button:hover:not(.active) {
+  background: var(--adminPanel-surface-hover);
+}
+
+/* Formulario de usuario */
+.admin-users-form {
+  background: var(--adminPanel-surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--adminPanel-shadow-md);
+  border: 1px solid var(--adminPanel-border);
+  margin-bottom: 2rem;
+}
+
+.admin-users-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-form-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--adminPanel-text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-users-form-title i {
+  color: #fbc500;
+}
+
+.admin-users-form-section {
+  margin-bottom: 2rem;
+}
+
+.admin-users-form-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--adminPanel-text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--adminPanel-border);
+}
+
+.admin-users-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-users-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.admin-users-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--adminPanel-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.admin-users-form-input,
+.admin-users-form-textarea,
+.admin-users-form-select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--adminPanel-border);
+  background: var(--adminPanel-surface);
+  color: var(--adminPanel-text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.admin-users-form-input:focus,
+.admin-users-form-textarea:focus,
+.admin-users-form-select:focus {
+  outline: none;
+  border-color: #fbc500;
+  box-shadow: 0 0 0 3px rgba(251, 197, 0, 0.2);
+}
+
+.admin-users-form-help {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--adminPanel-text-tertiary);
+  margin-top: 0.5rem;
+}
+
+/* Selector de avatar */
+.admin-users-avatar-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-users-avatar-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--adminPanel-border);
+  position: relative;
+}
+
+.admin-users-avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-users-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--adminPanel-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--adminPanel-text-tertiary);
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+.admin-users-avatar-upload {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-users-avatar-upload-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--adminPanel-surface-secondary);
+  color: var(--adminPanel-text-secondary);
+  border: 1px solid var(--adminPanel-border);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-users-avatar-upload-btn:hover {
+  background: var(--adminPanel-surface-hover);
+  color: var(--adminPanel-text-primary);
+}
+
+.admin-users-avatar-upload-btn.remove:hover {
+  color: var(--adminPanel-danger);
+}
+
+/* Selector de roles */
+.admin-users-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.admin-users-role-option {
+  position: relative;
+}
+
+.admin-users-role-option input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.admin-users-role-label {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  background: var(--adminPanel-surface-secondary);
+  border: 1px solid var(--adminPanel-border);
+  color: var(--adminPanel-text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-users-role-label:hover {
+  background: var(--adminPanel-surface-hover);
+}
+
+.admin-users-role-option input:checked + .admin-users-role-label {
+  background: var(--adminPanel-accent-surface);
+  border-color: #fbc500;
+  color: #fbc500;
+}
+
+/* Botones de formulario */
+.admin-users-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-form-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.admin-users-form-button.primary {
+  background: #fbc500;
+  color: #050b14;
+  border: none;
+  box-shadow: 0 4px 6px rgba(251, 197, 0, 0.15);
+}
+
+.admin-users-form-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(251, 197, 0, 0.2);
+}
+
+.admin-users-form-button.secondary {
+  background: var(--adminPanel-surface-secondary);
+  color: var(--adminPanel-text-secondary);
+  border: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-form-button.secondary:hover {
+  background: var(--adminPanel-surface-hover);
+  color: var(--adminPanel-text-primary);
+  transform: translateY(-2px);
+}
+
+.admin-users-form-button.danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.admin-users-form-button.danger:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.15);
+}
+
+/* Vista de detalle de usuario */
+.admin-users-detail {
+  background: var(--adminPanel-surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--adminPanel-shadow-md);
+  border: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--adminPanel-border);
+}
+
+.admin-users-detail-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--adminPanel-border);
+  flex-shrink: 0;
+}
+
+.admin-users-detail-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-users-detail-info {
+  flex: 1;
+}
+
+.admin-users-detail-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--adminPanel-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.admin-users-detail-email {
+  font-size: 0.875rem;
+  color: var(--adminPanel-text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.admin-users-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.admin-users-detail-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--adminPanel-text-secondary);
+}
+
+.admin-users-detail-meta-item i {
+  font-size: 0.875rem;
+  color: var(--adminPanel-text-tertiary);
+}
+
+.admin-users-detail-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .admin-users-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .admin-users-actions {
+    width: 100%;
+  }
+
+  .admin-users-action-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .admin-users-filters {
+    flex-direction: column;
+  }
+
+  .admin-users-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-users-form-actions {
+    flex-direction: column;
+  }
+
+  .admin-users-form-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-users-detail-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .admin-users-detail-actions {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}

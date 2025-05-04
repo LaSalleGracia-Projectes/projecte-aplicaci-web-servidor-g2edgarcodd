@@ -230,4 +230,38 @@ class UserController extends Controller
             'message' => 'Usuario actualizado correctamente'
         ], 200);
     }
+
+    public function getAllUsers(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|integer'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::find($request->user_id);
+
+        if ($user->is_admin == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Solo un administrador puede ver todos los usuarios'
+            ], 403);
+        }
+
+        $usuarios = User::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $usuarios
+        ], 200);
+    }
 }

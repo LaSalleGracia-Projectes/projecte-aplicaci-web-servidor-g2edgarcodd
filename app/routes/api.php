@@ -14,6 +14,7 @@ Route::post('/register', [UserController::class, 'register']);
 Route::middleware([TokenAuthenticacion::class])->get('/getUser', [UserController::class, 'getUser']);
 Route::middleware([TokenAuthenticacion::class])->post('/uploadImage', [UserController::class, 'uploadImage']);
 Route::middleware([TokenAuthenticacion::class])->put('/updateUser', [UserController::class, 'updateUser']);
+Route::middleware([TokenAuthenticacion::class])->get('/getAllUsers', [UserController::class, 'getAllUsers']);
 Route::post('/forgotPassword', [UserController::class, 'forgotPassword']);
 
 //Rutas de reseñas

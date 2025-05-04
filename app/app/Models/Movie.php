@@ -10,18 +10,24 @@ class Movie extends Model
     protected $table = 'content';
 
     protected $fillable = [
-        "#TITLE",
-        "#YEAR",
-        "#IMDB_ID",
-        "#ACTORS",
-        "#IMDB_URL",
-        "#IMDB_POSTER",
-        "photo_widht",
-        "photo_height"
+        'adult',
+        'backdrop_path',
+        'genre_ids',
+        'id',
+        'original_language',
+        'original_title',
+        'overview',
+        'popularity',
+        'poster_path',
+        'release_date',
+        'title',
+        'video',
+        'vote_average',
+        'vote_count',
     ];
 
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'movie_id', '#IMDB_ID');
+        return $this->hasMany(Review::class, 'movie_id', 'id');
     }
 }

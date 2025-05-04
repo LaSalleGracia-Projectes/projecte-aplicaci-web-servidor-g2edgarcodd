@@ -31,7 +31,7 @@ class MovieController extends Controller
                 'errors' => $validator->errors()
             ], 400);
         }
-        $movie = Movie::where("#IMDB_ID", $request->movie_id)->get();
+        $movie = Movie::where("_id", $request->movie_id)->get();
 
         if (!$movie) {
             return response()->json(['message' => 'Movie not found'], 404);
@@ -57,7 +57,7 @@ class MovieController extends Controller
                 'errors' => $validator->errors()
             ], 400);
         }
-        $movie = Movie::where('#TITLE', $request->title)->get();
+        $movie = Movie::where('title', $request->title)->get();
 
         if (!$movie) {
             return response()->json(['message' => 'Movie not found'], 404);

@@ -139,37 +139,34 @@ class ReviewController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'review_id' => 'required|integer',
-                'review_user_id' => 'required|integer',
-                'user_id' => 'required|integer',
-                'title' => 'required|string|max:255',
-                'body' => 'required|string|max:255',
-                'is_positive' => 'required|boolean'
+                'review_id' => 'required|integer'
             ]
         );
 
         if ($validator->fails()) {
-            return response([
+            return response()->json([
                 'success' => false,
-                'message' => 'Error al modificar review',
+                'message' => 'ID de review inválido',
                 'errors' => $validator->errors()
             ], 400);
         }
 
-        if ($reviews->isEmpty()) {
+        $review = Review::find($request->review_id);
+
+        if (!$review) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se ha encontrado ninguna reseña',
+                'message' => 'Review no encontrada'
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $reviews,
+            'review' => $review
         ], 200);
     }
 
-    public function getReviewByUser(Request $request)
+    public function getReviewsByUser(Request $request)
     {
         $user = $request->user();
 
@@ -188,7 +185,7 @@ class ReviewController extends Controller
         ], 200);
     }
 
-    public function getReviewByMovie(Request $request)
+    public function getReviewsByMovie(Request $request)
     {
         $request->validate([
             'movie_id' => 'required|string',

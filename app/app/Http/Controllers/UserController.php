@@ -201,8 +201,7 @@ class UserController extends Controller
                 'name' => 'string|max:255',
                 'surname' => 'string|max:255',
                 'date_of_birth' => 'date',
-                'username' => 'string|max:255|unique:users,username,' . $request->user_id,
-                'password' => 'string|min:8|confirmed'
+                'username' => 'string|max:255|unique:users,username,' . $request->user_id
             ]
         );
 
@@ -232,7 +231,7 @@ class UserController extends Controller
             ], 403);
         }
 
-        $user->update($request->all());
+        $user->update($request->only(['name', 'surname', 'date_of_birth', 'username']));
 
         return response()->json([
             'success' => true,

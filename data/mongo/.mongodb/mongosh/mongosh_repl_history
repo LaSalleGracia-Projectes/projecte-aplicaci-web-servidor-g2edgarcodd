@@ -1,0 +1,22 @@
+exit
+db.content.insertOne({ "#TITLE": "Ejemplo 3", "#YEAR": 1966, "#IMDB_ID": "tt0000000", "#ACTORS": "Clint Eastwood, Eli Wallach", "#IMDB_URL": "https://imdb.com/title/tt0060196", "#IMG_POSTER": "https://m.media-amazon.com/images/M/MV5BMWM5ZjQxM2YtNDlmYi00ZDNhLWI4MWUtN2VkYjBlMTY1ZTkwXkEyXkFqcGc@._V1_.jpg", "photo_width": 2001, "photo_height": 3000})
+db.content.insertOne({ "#TITLE": "Ejemplo 2", "#YEAR": 1966, "#IMDB_ID": "tt0060196", "#ACTORS": "Clint Eastwood, Eli Wallach", "#IMDB_URL": "https://imdb.com/title/tt0060196", "#IMG_POSTER": "https://m.media-amazon.com/images/M/MV5BMWM5ZjQxM2YtNDlmYi00ZDNhLWI4MWUtN2VkYjBlMTY1ZTkwXkEyXkFqcGc@._V1_.jpg", "photo_width": 2001, "photo_height": 3000})
+db.content.insertOne({ "#TITLE": "The Good, the Bad and the Ugly", "#YEAR": 1966, "#IMDB_ID": "tt0060196", "#ACTORS": "Clint Eastwood, Eli Wallach", "#IMDB_URL": "https://imdb.com/title/tt0060196", "#IMG_POSTER": "https://m.media-amazon.com/images/M/MV5BMWM5ZjQxM2YtNDlmYi00ZDNhLWI4MWUtN2VkYjBlMTY1ZTkwXkEyXkFqcGc@._V1_.jpg", "photo_width": 2001, "photo_height": 3000})
+db.content.insertOne({ "#TITLE": "The Good, the Bad and the Ugly", "#YEAR"})
+db.content.deleteOne({ "#YEAR": 2014 })
+db.conent.deleteOne({ #YEAR: 2014 })
+db.content.deleteMany( { #YEAR: 2014 }
+db.content.insertMany([ #TITLE "The Good, the Bad and the Ugly" #YEAR 1966 #IMDB_ID "tt0060196" #ACTORS "Clint Eastwood, Eli Wallach" #IMDB_URL "https://imdb.com/title/tt0060196" #IMG_POSTER "https://m.media-amazon.com/images/M/MV5BMWM5ZjQxM2YtNDlmYi00ZDNhLWI4MW…" photo_width 2001 photo_height 3000
+use streamhub
+show dbs
+exit
+db.content.find()
+db.content.find().pretty()
+db.content.insertOne({ "#TITLE": "Interstellar", "#YEAR": 2014, "#IMDB_ID": "tt0816692", "#ACTORS": ["Matthew McConaughey", "Anne Hathaway"], "#IMDB_URL": "https://www.imdb.com/title/tt0816692/", "#IMDB_POSTER": "https://image.tmdb.org/t/p/original/interstellar.jpg", "photo_widht": 1280, "photo_height": 720 })
+use streamhub
+show dbs
+exit
+db.content.find().pretty()
+use streamhub
+db.content.find().pretty()
+use StreamHub

@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Movie extends Model
 {
     protected $connection = 'mongodb';
-    protected $collection = 'content';
+    protected $table = 'content';
 
     protected $fillable = [
         "#TITLE",

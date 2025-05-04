@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\MovieController;
 use App\Models\Review;
+use App\Models\Movie;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Middleware\TokenAuthenticacion;
 
@@ -27,6 +30,13 @@ Route::middleware([TokenAuthenticacion::class])->get('/getReview', [ReviewContro
 Route::middleware([TokenAuthenticacion::class])->post('/createReview', [ReviewController::class, 'createReview']);
 Route::middleware([TokenAuthenticacion::class])->delete('/deleteReview', [ReviewController::class, 'deleteReview']);
 Route::middleware([TokenAuthenticacion::class])->put('/updateReview', [ReviewController::class, 'updateReview']);
+
+// Rutas de películas
+Route::get('/getAllMovies', [MovieController::class, 'getAllMovies']);
+Route::get('/getMovieById', [MovieController::class, 'getMovieById']);
+Route::get('/getMovieByTitle', [MovieController::class, 'getMovieByTitle']);
+
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();

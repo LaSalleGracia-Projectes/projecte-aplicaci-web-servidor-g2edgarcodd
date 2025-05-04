@@ -94,8 +94,6 @@ class ReviewController extends Controller
             $request->all(),
             [
                 'review_id' => 'required|integer',
-                'review_user_id' => 'required|integer',
-                'user_id' => 'required|integer',
                 'title' => 'required|string|max:255',
                 'body' => 'required|string|max:255',
                 'is_positive' => 'required|boolean'
@@ -105,7 +103,7 @@ class ReviewController extends Controller
         if ($validator->fails()) {
             return response([
                 'success' => false,
-                'message' => 'Error al modificar review',
+                'message' => 'Informacion incorrecta',
                 'errors' => $validator->errors()
             ], 400);
         }
@@ -115,26 +113,25 @@ class ReviewController extends Controller
         if (!$review) {
             return response()->json([
                 'success' => false,
-                'message' => 'Reseña no encontrada'
+                'message' => 'Review no encontrada'
             ], 404);
         }
 
-        if (($request->review_user_id) != $review->user_id) {
+        $usuarioAutenticado = auth()->user();
+
+        if ($review->user_id !== $usuarioAutenticado->id && !$usuarioAutenticado->is_admin) {
             return response([
                 'success' => false,
-                'message' => 'Error: solo el dueño de la review puede modificarla'
-            ]);
+                'message' => 'No tienes permiso para modificar esta review'
+            ], 403);
         }
-        $review->update([
-            'title' => $request->title,
-            'body' => $request->body,
-            'is_positive' => $request->is_positive
-        ]);
+
+        $review->update($request->only(['title', 'body', 'is_positive']));
 
         return response([
             'success' => true,
-            'message' => 'Review actualizada correctamente'
-        ]);
+            'message' => 'Review modificada correctamente'
+        ], 200);
     }
 
     public function getReview(Request $request)

@@ -43,6 +43,8 @@ class TokenAuthenticacion
                 'error' => 'No tienes permiso para acceder a este recurso'
             ], 403);
         }
+
+        auth()->login($usuarioAutenticado);
         return $next($request);
     }
 }

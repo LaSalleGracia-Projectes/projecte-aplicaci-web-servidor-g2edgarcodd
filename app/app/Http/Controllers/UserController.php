@@ -223,6 +223,15 @@ class UserController extends Controller
             ], 404);
         }
 
+        $usuarioAutenticado = auth()->user();
+
+        if ($usuarioAutenticado->id != $user->id && $usuarioAutenticado->is_admin == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permiso para actualizar este usuario'
+            ], 403);
+        }
+
         $user->update($request->all());
 
         return response()->json([

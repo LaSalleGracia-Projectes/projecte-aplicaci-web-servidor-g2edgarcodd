@@ -21,6 +21,7 @@ Route::middleware([TokenAuthenticacion::class])->put('/updateUser', [UserControl
 Route::middleware([TokenAuthenticacion::class])->get('/getAllUsers', [UserController::class, 'getAllUsers']);
 Route::middleware([TokenAuthenticacion::class])->delete('/deleteUser', [UserController::class, 'deleteUser']);
 Route::post('/forgotPassword', [UserController::class, 'forgotPassword']);
+Route::post('/resetPassword', [UserController::class, 'resetPassword']);
 
 //Rutas de reseñas
 Route::middleware([TokenAuthenticacion::class])

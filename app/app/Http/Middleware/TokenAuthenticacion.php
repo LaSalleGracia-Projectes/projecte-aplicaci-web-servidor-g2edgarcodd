@@ -32,6 +32,17 @@ class TokenAuthenticacion
                 'token' => $accessToken
             ], 401);
         }
+
+        $usuarioAutenticado = $accessToken->tokenable;
+
+        $idUsuarioEnRuta = $request->route('user_id') ?? $request->route('admin_id');
+
+        if ($idUsuarioEnRuta && $usuarioAutenticado->id != $idUsuarioEnRuta) {
+            return response()->json([
+                'success' => false,
+                'error' => 'No tienes permiso para acceder a este recurso'
+            ], 403);
+        }
         return $next($request);
     }
 }

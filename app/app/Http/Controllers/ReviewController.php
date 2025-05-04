@@ -130,6 +130,41 @@ class ReviewController extends Controller
         ]);
     }
 
+    public function getReview(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'review_id' => 'required|integer',
+                'review_user_id' => 'required|integer',
+                'user_id' => 'required|integer',
+                'title' => 'required|string|max:255',
+                'body' => 'required|string|max:255',
+                'is_positive' => 'required|boolean'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response([
+                'success' => false,
+                'message' => 'Error al modificar review',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        if ($reviews->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se ha encontrado ninguna reseña',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $reviews,
+        ], 200);
+    }
+
     public function getReviewByUser(Request $request)
     {
         $user = $request->user();

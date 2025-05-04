@@ -264,4 +264,48 @@ class UserController extends Controller
             'data' => $usuarios
         ], 200);
     }
+
+    public function deleteUser(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'admin_id' => 'required|integer',
+                'user_id' => 'required|integer'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $admin = User::find($request->admin_id);
+
+        if ($admin->is_admin == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Solo un administrador puede ver todos los usuarios'
+            ], 403);
+        }
+
+        $usuario = User::find($request->user_id);
+
+        if (!$usuario) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        $usuario->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario eliminado correctamente'
+        ], 200);
+    }
 }

@@ -15,6 +15,7 @@ Route::middleware([TokenAuthenticacion::class])->get('/getUser', [UserController
 Route::middleware([TokenAuthenticacion::class])->post('/uploadImage', [UserController::class, 'uploadImage']);
 Route::middleware([TokenAuthenticacion::class])->put('/updateUser', [UserController::class, 'updateUser']);
 Route::middleware([TokenAuthenticacion::class])->get('/getAllUsers', [UserController::class, 'getAllUsers']);
+Route::middleware([TokenAuthenticacion::class])->delete('/deleteUser', [UserController::class, 'deleteUser']);
 Route::post('/forgotPassword', [UserController::class, 'forgotPassword']);
 
 //Rutas de reseñas

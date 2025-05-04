@@ -19,7 +19,10 @@ Route::middleware([TokenAuthenticacion::class])->delete('/deleteUser', [UserCont
 Route::post('/forgotPassword', [UserController::class, 'forgotPassword']);
 
 //Rutas de reseñas
-Route::middleware([TokenAuthenticacion::class])->get('/getReviews', [ReviewController::class, 'getReviews']);
+Route::middleware([TokenAuthenticacion::class])
+->get('/getReviewsByUser', [ReviewController::class, 'getReviewsByUser']);
+Route::middleware([TokenAuthenticacion::class])
+->get('/getReviewsByMovie', [ReviewController::class, 'getReviewsByMovie']);
 Route::middleware([TokenAuthenticacion::class])->get('/getReview', [ReviewController::class, 'getReview']);
 Route::middleware([TokenAuthenticacion::class])->post('/createReview', [ReviewController::class, 'createReview']);
 Route::middleware([TokenAuthenticacion::class])->delete('/deleteReview', [ReviewController::class, 'deleteReview']);

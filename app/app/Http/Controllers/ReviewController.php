@@ -168,9 +168,22 @@ class ReviewController extends Controller
 
     public function getReviewsByUser(Request $request)
     {
-        $user = $request->user();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|integer'
+            ]
+        );
 
-        $reviews = Review::where('user_id', $user->id)->get();
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID de usuario inválido',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $reviews = Review::where('user_id', $request->user_id)->get();
 
         if ($reviews->isEmpty()) {
             return response()->json([
@@ -187,9 +200,21 @@ class ReviewController extends Controller
 
     public function getReviewsByMovie(Request $request)
     {
-        $request->validate([
-            'movie_id' => 'required|string',
-        ]);
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'movie_id' => 'required|string',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID de review inválido',
+                'errors' => $validator->errors()
+            ], 400);
+        }
 
         $reviews = Review::where('movie_id', $request->movie_id)->get();
 

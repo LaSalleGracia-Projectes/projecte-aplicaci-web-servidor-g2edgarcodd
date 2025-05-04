@@ -50,28 +50,35 @@ class ReviewController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'review_id' => 'required|integer',
-                'review_user_id' => 'required|integer',
-                'user_id' => 'required|integer'
+                'review_id' => 'required|integer'
             ]
         );
 
         if ($validator->fails()) {
             return response([
                 'success' => false,
-                'message' => 'Error: review_id, review_user_id o user_id incorrecto',
+                'message' => 'Error: review_id incorrecto',
                 'errors' => $validator->errors()
             ], 400);
         }
 
-        if (($request->review_user_id) != ($request->user_id)) {
-            return response([
+        $review = Review::find($request->review_id);
+
+        if (!$review) {
+            return response()->json([
                 'success' => false,
-                'message' => 'Error: solo el dueño de la review puede eliminarla'
-            ]);
+                'message' => 'Review no encontrada'
+            ], 404);
         }
 
-        $review = Review::find($request->review_id);
+        $usuarioAutenticado = auth()->user();
+
+        if ($review->user_id !== $usuarioAutenticado->id && !$usuarioAutenticado->is_admin) {
+            return response([
+                'success' => false,
+                'message' => 'No tienes permiso para eliminar esta review'
+            ], 403);
+        }
 
         $review->delete();
 

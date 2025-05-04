@@ -8,6 +8,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MovieController;
 use App\Models\Review;
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Middleware\TokenAuthenticacion;
 
@@ -43,12 +44,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // Ruta de verificación (el enlace que el usuario recibe por correo)
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request, $id, $hash) {
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
     $user = User::findOrFail($id);
-
-    if (!$user) {
-        return response()->json(['message' => 'Usuario no encontrado'], 404);
-    }
 
     if (! hash_equals($hash, sha1($user->getEmailForVerification()))) {
         return response()->json(['message' => 'Firma inválida'], 403);
@@ -60,8 +57,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
     $user->markEmailAsVerified();
 
-    //return response()->json(['message' => 'Correo verificado correctamente']);
-    return redirect('/test');
+    return response()->json(['message' => 'Correo verificado correctamente']);
 })->middleware(['signed'])->name('verification.verify');
 
 // Ruta de notificación de verificación (por si quieres mostrar algo mientras espera)

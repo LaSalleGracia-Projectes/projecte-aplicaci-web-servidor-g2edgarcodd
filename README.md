@@ -85,7 +85,7 @@ Adrián Ortega Olgoso - adrian.ortega@gracia.lasalle.cat
 ### Built With
 
 * ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-* [![Laravel][Laravel.com]][Laravel-url]
+* ![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
 * ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 * ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
 
@@ -135,8 +135,6 @@ Estas instrucciones serviran para levantar el backend localmente.
 
 <!-- LICENSE -->
 ## License
-
-[![MIT License][license-shield]][license-url]
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
